@@ -1,5 +1,5 @@
 % 生成测试图像（改用非对称图像）
-close all;
+% close all;
 im1 = imread('cameraman.tif'); % 使用非对称图像
 angle = 45;
 im2 = imrotate(im1, angle, 'bilinear', 'crop');
@@ -25,7 +25,9 @@ corr_strengths = zeros(1, length(theta));
 theta = 0:2:358;
 for i = 1 : length(theta) / 2
     R2_new = R2(:, [(i+1):length(theta), 1 : i]);
-    corr_strengths(i) = sum(sum(R1.* R2_new));
+    R2_new_normalized = R2_new - mean(R2_new(:)); % 去均值
+    R1_normalized = R1 - mean(R1(:)); % 去均值
+    corr_strengths(i) = sum(sum(R1_normalized.* R2_new_normalized));
     if (mod(i, 10) == 0)
         figure;
         subplot(1,2,1);
